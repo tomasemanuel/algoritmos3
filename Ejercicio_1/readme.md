@@ -9,4 +9,4 @@
 
 **¿les quedó código repetido? ¿dónde? ¿Se animan a adivinar qué cosa del dominio les faltó representar (y por eso tienen código repetido)? Responsabilidad de dejar un huevo consumiendo otro insecto ¿Quién les quedó, en su modelo, que es el responsable de ver si hay suficientes polillas u orugas y entonces dejar un huevo? ¿el insecto (Polly, Oriana, etc) o el hábitat? ¿por qué? ¿por qué tendría sentido que fuera de la otra forma? ¿con cuál nos quedamos?**
 
-  
+  Pudimos notar que nos quedo codigo repetido mirando las diferencias de la comida de La Avispa Polly y La Avispa Oriana, por lo que decidimos tener a La Avispa Polly de hija de La Avispa Oriana para reducir el codigo repetido entre ellas. Esto ayudo para que podamos darnos cuenta que las dos avispas 
