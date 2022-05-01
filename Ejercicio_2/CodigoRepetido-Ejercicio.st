@@ -29,13 +29,13 @@ test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FH 5/1/2022 11:56:38'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'Te 5/1/2022 13:01:32'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	| customerBook paulMcCartney |
-	customerBook := CustomerBook new.
-	paulMcCartney := 'Paul McCartney'.
 	
-	customerBook addCustomerNamed: paulMcCartney.
+	paulMcCartney  := 'Paul McCartney'.
+	customerBook := self createACustomerBookAndAddAName: paulMcCartney .
+	
 	self testOfTheExecutingTimeOf: [customerBook removeCustomerNamed: paulMcCartney.] forLessThanMiliseconds: 100
 	
 ! !
@@ -53,14 +53,14 @@ test03CanNotAddACustomerWithEmptyName
 		self assert: anError messageText = CustomerBook customerCanNotBeEmptyErrorMessage.
 		self assert: customerBook isEmpty ].! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FH 5/1/2022 11:50:20'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'Te 5/1/2022 13:02:14'!
 test04CanNotRemoveAnInvalidCustomer
 	
 	| customerBook johnLennon |
 			
-	customerBook := CustomerBook new.
+			
 	johnLennon := 'John Lennon'.
-	customerBook addCustomerNamed: johnLennon.
+	customerBook:= self createACustomerBookAndAddAName: johnLennon .
 	
 	self assertThatABlock: [customerBook removeCustomerNamed: 'Paul McCartney']
 	FailsWithACertainError: NotFound
@@ -101,14 +101,13 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FH 5/1/2022 11:50:20'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'Te 5/1/2022 13:04:52'!
 test07CanNotSuspendAnInvalidCustomer
 	
 	| customerBook johnLennon |
 
-    	customerBook := CustomerBook new.
-    	johnLennon := 'John Lennon'.
-    	customerBook addCustomerNamed: johnLennon.
+	johnLennon := 'John Lennon'.
+	customerBook:= self createACustomerBookAndAddAName: johnLennon.
 
 	self assertThatABlock: [customerBook suspendCustomerNamed: 'Ringo Starr'] 
 	FailsWithACertainError: CantSuspend
@@ -116,7 +115,7 @@ test07CanNotSuspendAnInvalidCustomer
 
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'FH 5/1/2022 11:50:20'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'Te 5/1/2022 13:40:30'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
 	| customerBook johnLennon |
@@ -153,6 +152,13 @@ assertThatActiveIsZeroAndSuspendedAndTotalNumberOfCustomersIs: aNumber InABook:c
     self assert: 0 equals: customerBook numberOfActiveCustomers.
     self assert: aNumber equals: customerBook numberOfSuspendedCustomers.
     self assert: aNumber equals: customerBook numberOfCustomers.! !
+
+!CustomerBookTest methodsFor: 'auxiliary testing' stamp: 'Te 5/1/2022 12:59:32'!
+createACustomerBookAndAddAName:aName
+	| customerBook|
+	customerBook := CustomerBook new.
+	customerBook addCustomerNamed: aName.
+	^customerBook.! !
 
 !CustomerBookTest methodsFor: 'auxiliary testing' stamp: 'FH 5/1/2022 11:56:38'!
 testOfTheExecutingTimeOf: aBlock forLessThanMiliseconds: aMiliseconds
