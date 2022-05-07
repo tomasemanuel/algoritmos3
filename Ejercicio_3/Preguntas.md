@@ -2,7 +2,7 @@
 ## Aporte de los mensajes de DD
 **En un double dispatch (DD), ¿qué información aporta cada uno de los dos llamados?**
 
-  En el primer llamado se sabe a que subclase(Fraccion o Entero) se esta invocando, y en el segundo llamado, se esta viendo un mensaje de esta subclase. **PREGUNTAR**
+  En el primer llamado se sabe el proposito del mensaje y a que clase pertenece el primer parametro, mientras que en el segundo llamado ya sabemos de que clase pertenece el segundo parametro para poder completar la ejecucion.
 ## Lógica de instanciado
 **Con lo que vieron y saben hasta ahora, ¿donde les parece mejor tener la lógica de cómo instanciar un objeto? ¿por qué? ¿Y si se crea ese objeto desde diferentes lugares y de diferentes formas? ¿cómo lo resuelven?**
 
