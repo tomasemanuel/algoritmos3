@@ -16,5 +16,6 @@ Se pone el mensaje de self subclassresponsibility para poder entregarle el poder
 
 ##No rompas
 **¿Por qué está mal/qué problemas trae romper encapsulamiento?**
+  Al romper el encapsulamiento, perdemos el orden por donde proviene el mensaje de la llamada anterior. Se pierde la forma y el uso que se le dio al programa, incentivando a que se cometan errores imprevistos que se podrian evitar simplemente siguiendo la linea de llamados que se tendria que hacer.
 
 
