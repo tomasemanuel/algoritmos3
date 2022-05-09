@@ -639,18 +639,9 @@ Entero subclass: #Uno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Uno methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:08:49'!
+!Uno methodsFor: 'arithmetic operations - private' stamp: 'TE 5/9/2022 16:05:06'!
 createsANewFraccionWith:aDividend
-	^aDividend.
-	"| greatestCommonDivisor numerator denominator |
-	
-	greatestCommonDivisor := aDividend greatestCommonDivisorWith: self. 
-	numerator := aDividend // greatestCommonDivisor.
-	denominator := self // greatestCommonDivisor.
-	
-	denominator isOne ifTrue: [ ^numerator ].
-
-	^Fraccion new initializeWith: numerator over: denominator."! !
+	^aDividend.! !
 
 !Uno methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 16:38:04'!
 fibonacci
