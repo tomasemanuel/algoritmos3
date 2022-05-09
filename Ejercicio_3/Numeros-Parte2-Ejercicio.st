@@ -600,7 +600,7 @@ Entero subclass: #PositivoDistintoDeUno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!PositivoDistintoDeUno methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:16:43'!
+!PositivoDistintoDeUno methodsFor: 'arithmetic operations - private' stamp: 'TE 5/9/2022 15:59:11'!
 createsANewFraccionWith:aDividend
 	| greatestCommonDivisor numerator denominator |
 	
@@ -809,23 +809,6 @@ beSubstractedToAnEntero: aMinuend
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'FH 5/8/2022 23:16:08'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'TE 5/9/2022 15:53:29'!
 with: aDividend over: aDivisor
-
-	
-	"aDividend isZero ifTrue: [ ^aDividend ]."
-	
-	
-	^aDivisor createsANewFraccionWith:aDividend.
-	
-	"
-	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
-	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
-	(aDivisor integerValue>0)ifTrue:[
-	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
-	numerator := aDividend // greatestCommonDivisor.
-	denominator := aDivisor // greatestCommonDivisor.
-	
-	denominator isOne ifTrue: [ ^numerator ].
-
-	^self new initializeWith: numerator over: denominator]	."! !
+	^aDivisor createsANewFraccionWith:aDividend.! !
