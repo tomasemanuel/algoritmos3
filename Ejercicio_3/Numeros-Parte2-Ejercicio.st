@@ -476,46 +476,49 @@ isZero
 	
 	^self class with: value // aDivisor integerValue! !
 
-!Entero methodsFor: 'arithmetic operations - private' stamp: 'HernanWilkinson 5/7/2016 21:00'!
-greatestCommonDivisorWith: anEntero 
-	
-	^self class with: (value gcd: anEntero integerValue)! !
-
-
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:04:58'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 14:04:58'!
 beAddedToAnEntero: anAugend
 	^self class with: anAugend integerValue + value.
 	! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:07:30'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 14:07:30'!
 beAddedToAnFraccion: anAugend
 	^self * anAugend denominator + anAugend numerator  / anAugend denominator.! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:09:37'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 14:09:37'!
 beDividedByAFraccion: aDividend
 	^Fraccion with: aDividend numerator over: aDividend denominator * self
 	! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:09:27'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 14:09:27'!
 beDividedByAnEntero: aDividend
 	^Fraccion with: aDividend over: self
 	! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 12:50:29'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 12:50:29'!
 beMultipliedByAFraccion: aMultiplier
 	^(self * aMultiplier numerator) / aMultiplier denominator! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:12:38'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 14:12:38'!
 beMultipliedByAnEntero: aMultiplier
 	^self class with: value * aMultiplier integerValue.! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 13:43:42'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 13:43:42'!
 beSubstractedToAFraccion: aMinuend
 	^aMinuend numerator- (self * aMinuend denominator)/ aMinuend denominator! !
 
-!Entero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 13:24:31'!
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 13:24:31'!
 beSubstractedToAnEntero: aMinuend
 	^self class with: aMinuend  integerValue - value.! !
+
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:08:48'!
+createsANewFraccionWith:aDividend
+ 	self subclassResponsibility .! !
+
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'HernanWilkinson 5/7/2016 21:00'!
+greatestCommonDivisorWith: anEntero 
+	
+	^self class with: (value gcd: anEntero integerValue)! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -527,12 +530,12 @@ Entero class
 negativeFibonacciErrorDescription
 	^ ' Fibonacci no está definido aquí para Enteros Negativos'! !
 
-!Entero class methodsFor: 'instance creation' stamp: 'sfdga 5/7/2022 19:00:00'!
+!Entero class methodsFor: 'instance creation' stamp: 'FH 5/8/2022 23:19:24'!
 with: aValue 
 	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
 	|subclaseEncontrada|
 	aValue isInteger ifFalse: [self error: 'aValue debe ser anInteger'].
-	subclaseEncontrada := Entero subclasses detect:[:subclase | (subclase incluye:aValue)].
+	subclaseEncontrada := Entero subclasses detect:[:subclase | (subclase includes:aValue)].
 	^subclaseEncontrada new initializeWith: aValue.! !
 
 
@@ -543,7 +546,11 @@ Entero subclass: #Cero
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Cero methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 16:38:04'!
+!Cero methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:08:48'!
+createsANewFraccionWith:aDividend
+	^self error: Fraccion canNotDivideByZeroErrorDescription.! !
+
+!Cero methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 16:38:04'!
 fibonacci
 	
 	^Entero with:1.! !
@@ -554,8 +561,8 @@ fibonacci
 Cero class
 	instanceVariableNames: ''!
 
-!Cero class methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 18:27:57'!
-incluye:aValue
+!Cero class methodsFor: 'as yet unclassified' stamp: 'FH 5/8/2022 23:19:24'!
+includes:aValue
 	^aValue = 0! !
 
 
@@ -566,7 +573,11 @@ Entero subclass: #Negativo
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Negativo methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 16:38:04'!
+!Negativo methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:08:49'!
+createsANewFraccionWith:aDividend
+	^aDividend negated / self negated.! !
+
+!Negativo methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 16:38:04'!
 fibonacci
 	self error: Entero negativeFibonacciErrorDescription
 	! !
@@ -577,8 +588,8 @@ fibonacci
 Negativo class
 	instanceVariableNames: ''!
 
-!Negativo class methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 18:26:36'!
-incluye: aValue
+!Negativo class methodsFor: 'as yet unclassified' stamp: 'FH 5/8/2022 23:19:24'!
+includes: aValue
 	^aValue < 0.! !
 
 
@@ -589,7 +600,21 @@ Entero subclass: #PositivoDistintoDeUno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!PositivoDistintoDeUno methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 16:42:35'!
+!PositivoDistintoDeUno methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:16:43'!
+createsANewFraccionWith:aDividend
+	| greatestCommonDivisor numerator denominator |
+	
+	aDividend isZero ifTrue: [ ^aDividend ].
+	
+	greatestCommonDivisor := aDividend greatestCommonDivisorWith: self. 
+	numerator := aDividend // greatestCommonDivisor.
+	denominator := self // greatestCommonDivisor.
+	
+	denominator isOne ifTrue: [ ^numerator ].
+
+	^Fraccion new initializeWith: numerator over: denominator.! !
+
+!PositivoDistintoDeUno methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 16:42:35'!
 fibonacci
 	|one two|
 	one:= Entero with:1.
@@ -602,8 +627,8 @@ fibonacci
 PositivoDistintoDeUno class
 	instanceVariableNames: ''!
 
-!PositivoDistintoDeUno class methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 18:27:03'!
-incluye:aValue
+!PositivoDistintoDeUno class methodsFor: 'as yet unclassified' stamp: 'FH 5/8/2022 23:19:24'!
+includes:aValue
 	^(aValue > 1)! !
 
 
@@ -614,7 +639,20 @@ Entero subclass: #Uno
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Uno methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 16:38:04'!
+!Uno methodsFor: 'arithmetic operations - private' stamp: 'FH 5/8/2022 23:08:49'!
+createsANewFraccionWith:aDividend
+	^aDividend.
+	"| greatestCommonDivisor numerator denominator |
+	
+	greatestCommonDivisor := aDividend greatestCommonDivisorWith: self. 
+	numerator := aDividend // greatestCommonDivisor.
+	denominator := self // greatestCommonDivisor.
+	
+	denominator isOne ifTrue: [ ^numerator ].
+
+	^Fraccion new initializeWith: numerator over: denominator."! !
+
+!Uno methodsFor: 'arithmetic operations - private' stamp: 'sfdga 5/7/2022 16:38:04'!
 fibonacci
 	^Entero with:1.! !
 
@@ -624,8 +662,8 @@ fibonacci
 Uno class
 	instanceVariableNames: ''!
 
-!Uno class methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 18:27:35'!
-incluye:aValue
+!Uno class methodsFor: 'as yet unclassified' stamp: 'FH 5/8/2022 23:19:24'!
+includes:aValue
 	^aValue =1.! !
 
 
@@ -715,12 +753,12 @@ printOn: aStream
 		print: denominator ! !
 
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:05:48'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 14:05:48'!
 beAddedToAnEntero: anAugend
 	^anAugend * self denominator + self numerator  / self denominator.
 ! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:07:09'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 14:07:09'!
 beAddedToAnFraccion: anAugend
 		
 	| newNumerator newDenominator |
@@ -731,24 +769,24 @@ beAddedToAnFraccion: anAugend
 	^newNumerator / newDenominator 
 ! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:10:13'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 14:10:13'!
 beDividedByAFraccion: aDividend
 	^( aDividend numerator * denominator ) / ( numerator * aDividend denominator).! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:10:19'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 14:10:19'!
 beDividedByAnEntero: aDividend
 	^(aDividend *self denominator ) / self numerator.! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'te 1/1/1980 02:01:26'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'te 1/1/1980 02:01:26'!
 beMultipliedByAFraccion: aMultiplier
 		^(numerator * aMultiplier numerator) / (denominator * aMultiplier denominator)! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 14:12:38'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 14:12:38'!
 beMultipliedByAnEntero: aMultiplier
 		^(aMultiplier *self numerator) / self denominator.
 	! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 13:40:10'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 13:40:10'!
 beSubstractedToAFraccion: aMinuend
 	| newNumerator newDenominator |
 	
@@ -759,7 +797,7 @@ beSubstractedToAFraccion: aMinuend
 	
 ! !
 
-!Fraccion methodsFor: 'as yet unclassified' stamp: 'sfdga 5/7/2022 13:16:59'!
+!Fraccion methodsFor: 'private-arithmetic' stamp: 'sfdga 5/7/2022 13:16:59'!
 beSubstractedToAnEntero: aMinuend
 	^aMinuend * self denominator - self numerator  / self denominator.
 	
@@ -771,20 +809,23 @@ beSubstractedToAnEntero: aMinuend
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'sfdga 5/7/2022 19:05:56'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'FH 5/8/2022 23:16:08'!
 with: aDividend over: aDivisor
 
-	| greatestCommonDivisor numerator denominator |
+	
+	"aDividend isZero ifTrue: [ ^aDividend ]."
+	
+	
+	^aDivisor createsANewFraccionWith:aDividend.
+	
+	"
 	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
-	aDividend isZero ifTrue: [ ^aDividend ].
-	
 	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
-	
+	(aDivisor integerValue>0)ifTrue:[
 	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := aDivisor // greatestCommonDivisor.
 	
 	denominator isOne ifTrue: [ ^numerator ].
 
-	^self new initializeWith: numerator over: denominator
-	! !
+	^self new initializeWith: numerator over: denominator]	."! !
