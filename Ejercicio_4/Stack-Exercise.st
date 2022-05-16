@@ -139,10 +139,20 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'primerPalabra segundaPalabra terceraPalabra cuartaPalabra stackWithFourElements stackWithNoElements'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:38:46'!
+createAnStackWithFourElements
+	|stack|
+	stack := OOStack new.
+	    stack push: primerPalabra.
+	    stack push: segundaPalabra.
+	    stack push: terceraPalabra.
+	    stack push: cuartaPalabra.	
+	^stack! !
 
 !SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 17:17:12'!
 test01assertFindIsCaseSensitive
@@ -158,154 +168,221 @@ test01assertFindIsCaseSensitive
     self deny: (colection includes: wordLowerCase).
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 17:17:34'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:49:49'!
 test02assertFindReturnsAnEmptyCollection
-    |stack finder colection|
 
-    stack := OOStack new.
+    |finder colection|
 
-    stack push: 'anana'.
-    stack push: 'buenasNoches'.
-    stack push: 'manzana'.
-    stack push: 'mandarina'.
-    finder := SentenceFinderByPrefix with: stack.
+    finder := SentenceFinderByPrefix with: stackWithNoElements.
     colection := finder find: 'r'.
     self assert: colection isEmpty.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 17:17:54'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:53:51'!
 test03assertFindReturnsACollectionWithOneWord
-    |stack finder colection|
 
-    stack := OOStack new.
+    |finder colection|
+    finder := SentenceFinderByPrefix with: stackWithFourElements.
+    colection := finder find: 'm'.
+    self assert: colection includes: 'manzana'.! !
 
-    stack push: 'anana'.
-    stack push: 'buenasNoches'.
-    stack push: 'manzana'.
-    stack push: 'mandarina'.
-    finder := SentenceFinderByPrefix with: stack.
-    colection := finder find: 'b'.
-    self assert: colection includes: 'buenasNoches'.! !
-
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 17:17:58'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:50:31'!
 test04assertFindReturnsACollectionWithMoreThanOnePrefix
-    |stack finder colection|
 
-    stack := OOStack new.
-
-    stack push: 'anana'.
-    stack push: 'buenasNoches'.
-    stack push: 'manzana'.
-    stack push: 'mandarina'.
-    finder := SentenceFinderByPrefix with: stack.
+    |finder colection|
+    finder := SentenceFinderByPrefix with: stackWithFourElements.
     colection := finder find: 'm'.
     self assert: ( (colection includes: 'manzana') and: (colection includes: 'mandarina')).! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'FH 5/14/2022 17:57:03'!
-test05assertFindWithAPrefixWithWithSpacesGivesAnError
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:34:16'!
+test05assertFindWithAPrefixWithAFinalSpaceGivesAnError
 	
-	| stack finder |
-	stack := OOStack new.
-	finder := SentenceFinderByPrefix with: stack.
-	self
-		should: [ finder find:'hola ']
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription ]! !
+	self assertFailsWithAnInvalidPrefix: 'hola '.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'FH 5/14/2022 17:57:03'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:48:59'!
+test05assertFindWithAPrefixWithASpaceBetweenWordsGivesAnError
+	
+	self assertFailsWithAnInvalidPrefix: 'buenas Noc'.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:34:30'!
 test06assertFindWithAnEmptyPrefixGivesAnError
 
-	| stack finder |
-	stack := OOStack new.
-	finder := SentenceFinderByPrefix with: stack.
-	self
-		should: [ finder find:'']
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription ]
+	self assertFailsWithAnInvalidPrefix: ''.
 	
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 16:24:08'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 22:49:13'!
 test07assertSentenceFinderByPrefixInitializeWithTheSameStackGiven
 		
-	| stack finder |
-	stack := OOStack new.
-	finder := SentenceFinderByPrefix with: stack.
-	self assert: stack = finder devolverOOStack .! !
+	| finder |
+	finder := SentenceFinderByPrefix with: stackWithFourElements.
+	self assertStackDoesntChangeWithAStack:finder devolverOOStack.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 16:23:06'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 22:47:18'!
 test08assertThatStackDoesntChangeAfterFind
-	| stack finder stackFinder firstPushedObject secondPushedObject|
-	stack := OOStack new.
-	firstPushedObject := 'first'.
-	secondPushedObject := 'second'.
-	stack push: firstPushedObject.
-	stack push: secondPushedObject.
-	finder := SentenceFinderByPrefix with: stack.
+
+	|finder|
+	finder := SentenceFinderByPrefix with: stackWithFourElements.
 	finder find:'fi'.
-	stackFinder := finder devolverOOStack .
-	self assert: stackFinder pop = secondPushedObject.
-	self assert: stackFinder pop = firstPushedObject.! !
+	self assertStackDoesntChange.
+	
+	! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:51:58'!
+test09assertFindWithAPrefixWithAnEmptyStackReturnsAnEmptyColection
+	
+	|finder colection|
+	finder := SentenceFinderByPrefix with: stackWithNoElements.
+    	colection := finder find: 'b'.
+	self assert: colection isEmpty.! !
+
+
+!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'Te 5/15/2022 21:48:53'!
+setUp
+	primerPalabra := 'anana'.
+	segundaPalabra := 'buenas Noches'.
+	terceraPalabra := 'manzana'.
+	cuartaPalabra := 'mandarina'.
+	stackWithFourElements := self createAnStackWithFourElements.
+	stackWithNoElements := OOStack new.! !
+
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:33:54'!
+assertFailsWithAnInvalidPrefix:aPrefix
+	| stack finder |
+	stack := self createAnStackWithFourElements.
+	finder := SentenceFinderByPrefix with: stack.
+	self assertThatABlockFailsWithACertainError: [finder find:aPrefix ]! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:47:06'!
+assertStackDoesntChange
+	self assert: stackWithFourElements pop = cuartaPalabra .
+	self assert: stackWithFourElements pop = terceraPalabra .
+	self assert: stackWithFourElements pop = segundaPalabra .
+	self assert: stackWithFourElements pop = primerPalabra .! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:49:40'!
+assertStackDoesntChangeWithAStack:aStack
+	self assert: aStack pop = cuartaPalabra .
+	self assert: aStack pop = terceraPalabra .
+	self assert: aStack pop = segundaPalabra .
+	self assert: aStack pop = primerPalabra .! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:27:34'!
+assertThatABlock: aBlock FailsWithACertainError: aCertainError
+	self
+		should: [ aBlock]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:29:45'!
+assertThatABlockFailsWithACertainError: aBlock 
+	self
+		should: aBlock
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
 
 
-!classDefinition: #Estado category: 'Stack-Exercise'!
-Object subclass: #Estado
+!classDefinition: #EstadoDeLaPila category: 'Stack-Exercise'!
+Object subclass: #EstadoDeLaPila
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Estado methodsFor: 'testing' stamp: 'FH 5/14/2022 18:07:55'!
-ErrorIfEmpty
+!EstadoDeLaPila methodsFor: 'testing' stamp: 'Te 5/15/2022 22:43:11'!
+returnWhichPushToUseIn:pila withAString:aString
+	self subclassResponsibility.! !
+
+!EstadoDeLaPila methodsFor: 'testing' stamp: 'Te 5/15/2022 20:31:57'!
+returnWhichTopToUseIn:pila
 	self subclassResponsibility.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Estado class' category: 'Stack-Exercise'!
-Estado class
+!classDefinition: 'EstadoDeLaPila class' category: 'Stack-Exercise'!
+EstadoDeLaPila class
 	instanceVariableNames: ''!
 
-!Estado class methodsFor: 'instance initialization' stamp: 'FH 5/14/2022 18:13:48'!
-with: unContenido
+!EstadoDeLaPila class methodsFor: 'instance initialization' stamp: 'Te 5/15/2022 22:19:28'!
+with: anStack
 	|subclaseEncontrada|
-	subclaseEncontrada := Estado subclasses detect:[:subclass| subclass includes: unContenido ].
+	subclaseEncontrada := EstadoDeLaPila subclasses detect:[:subclass| subclass includes: anStack ].
 	^subclaseEncontrada new. 
 	! !
 
 
-!classDefinition: #NoVacio category: 'Stack-Exercise'!
-Estado subclass: #NoVacio
+!classDefinition: #NoVacioConEspacio category: 'Stack-Exercise'!
+EstadoDeLaPila subclass: #NoVacioConEspacio
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NoVacio methodsFor: 'testing' stamp: 'FH 5/14/2022 18:10:29'!
-ErrorIfEmpty
-! !
+!NoVacioConEspacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:37:52'!
+returnWhichPushToUseIn:pila withAString:aString
+	^pila pushWhenStackHasSpaceWithAString:aString.! !
+
+!NoVacioConEspacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:44:39'!
+returnWhichTopToUseIn:pila
+	^pila topWhenNotEmpty.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'NoVacio class' category: 'Stack-Exercise'!
-NoVacio class
+!classDefinition: 'NoVacioConEspacio class' category: 'Stack-Exercise'!
+NoVacioConEspacio class
 	instanceVariableNames: ''!
 
-!NoVacio class methodsFor: 'testing' stamp: 'te 5/12/2022 21:11:35'!
-includes: unContenido
-	^ unContenido isEmpty not.! !
+!NoVacioConEspacio class methodsFor: 'testing' stamp: 'Te 5/15/2022 22:53:25'!
+includes: anStack
+
+	^ anStack isEmpty not and:[anStack withSpace].! !
 
 
-!classDefinition: #Vacio category: 'Stack-Exercise'!
-Estado subclass: #Vacio
+!classDefinition: #NoVacioSinEspacio category: 'Stack-Exercise'!
+EstadoDeLaPila subclass: #NoVacioSinEspacio
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Vacio methodsFor: 'testing' stamp: 'FH 5/14/2022 18:07:55'!
-ErrorIfEmpty
-	self error: OOStack stackEmptyErrorDescription! !
+!NoVacioSinEspacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:39:18'!
+returnWhichPushToUseIn:pila withAString:aString
+	^pila pushWhenStackIsFull .! !
+
+!NoVacioSinEspacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:44:39'!
+returnWhichTopToUseIn:pila
+	^pila topWhenNotEmpty.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NoVacioSinEspacio class' category: 'Stack-Exercise'!
+NoVacioSinEspacio class
+	instanceVariableNames: ''!
+
+!NoVacioSinEspacio class methodsFor: 'testing' stamp: 'Te 5/15/2022 22:53:13'!
+includes: anStack
+	"^ anStack isEmpty not.
+	"
+	
+	^ anStack isEmpty not and:[anStack withSpace not].! !
+
+
+!classDefinition: #Vacio category: 'Stack-Exercise'!
+EstadoDeLaPila subclass: #Vacio
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!Vacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:39:51'!
+returnWhichPushToUseIn:pila withAString:aString
+	^pila pushWhenStackHasSpaceWithAString:aString.! !
+
+!Vacio methodsFor: 'accessing' stamp: 'Te 5/15/2022 22:33:48'!
+returnWhichTopToUseIn:pila
+	^pila topWhenEmpty.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -313,9 +390,9 @@ ErrorIfEmpty
 Vacio class
 	instanceVariableNames: ''!
 
-!Vacio class methodsFor: 'testing' stamp: 'te 5/12/2022 21:07:53'!
-includes: unContenido
-	^ unContenido isEmpty.! !
+!Vacio class methodsFor: 'testing' stamp: 'Te 5/15/2022 21:14:44'!
+includes: anStack
+	^anStack isEmpty.! !
 
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
@@ -334,32 +411,50 @@ isEmpty
 size
 	^contenido size.! !
 
-!OOStack methodsFor: 'accessing' stamp: 'FH 5/14/2022 18:08:32'!
+!OOStack methodsFor: 'accessing' stamp: 'Te 5/15/2022 20:33:59'!
 top 
-	estado ErrorIfEmpty.
-	^contenido at: self size! !
+	^estado returnWhichTopToUseIn: self.! !
 
 
-!OOStack methodsFor: 'popAndPush' stamp: 'FH 5/14/2022 18:08:45'!
+!OOStack methodsFor: 'popAndPush' stamp: 'Te 5/15/2022 20:11:05'!
 pop
 	|ultimo|
 	
 	ultimo := self top.
 	contenido removeLast.
-	estado:= Estado with: self.
+	estado:= EstadoDeLaPila with: self.
 	^ultimo.  ! !
 
-!OOStack methodsFor: 'popAndPush' stamp: 'FH 5/14/2022 18:02:43'!
+!OOStack methodsFor: 'popAndPush' stamp: 'Te 5/15/2022 23:01:38'!
 push: aString 
+	^estado returnWhichPushToUseIn: self withAString:aString.! !
+
+!OOStack methodsFor: 'popAndPush' stamp: 'Te 5/15/2022 22:36:00'!
+pushWhenStackHasSpaceWithAString:aString
 	contenido add: aString. 
-	estado:= Estado with: self.! !
+	estado:= EstadoDeLaPila with: self.! !
 
 
-!OOStack methodsFor: 'initialization' stamp: 'FH 5/14/2022 18:02:15'!
+!OOStack methodsFor: 'initialization' stamp: 'Te 5/15/2022 20:11:05'!
 initialize
 
 	contenido := OrderedCollection new.
-	estado := Estado with: self.! !
+	estado := EstadoDeLaPila with: self.! !
+
+
+!OOStack methodsFor: 'private' stamp: 'Te 5/15/2022 22:33:48'!
+topWhenEmpty
+	self error: OOStack stackEmptyErrorDescription
+	! !
+
+!OOStack methodsFor: 'private' stamp: 'Te 5/15/2022 22:44:39'!
+topWhenNotEmpty
+	^contenido at: self size
+	! !
+
+!OOStack methodsFor: 'private' stamp: 'Te 5/15/2022 22:21:25'!
+withSpace
+	^true.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -371,6 +466,41 @@ OOStack class
 stackEmptyErrorDescription
 	
 	^ 'Stack is empty'! !
+
+
+!classDefinition: #OOStackLimitada category: 'Stack-Exercise'!
+OOStack subclass: #OOStackLimitada
+	instanceVariableNames: 'limite'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStackLimitada methodsFor: 'private' stamp: 'Te 5/15/2022 22:23:37'!
+withSpace
+	^ self size < limite.! !
+
+
+!OOStackLimitada methodsFor: 'initialization' stamp: 'Te 5/15/2022 22:23:17'!
+initializeWithALimit: unLimite
+	contenido := OrderedCollection new.
+	estado := EstadoDeLaPila with: self.
+	limite := unLimite.
+	! !
+
+
+!OOStackLimitada methodsFor: 'push' stamp: 'Te 5/15/2022 22:35:16'!
+pushWhenStackIsFull
+	self error: OOStack stackFullErrorDescription.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'OOStackLimitada class' category: 'Stack-Exercise'!
+OOStackLimitada class
+	instanceVariableNames: ''!
+
+!OOStackLimitada class methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:31:54'!
+stackFullErrorDescription
+	 ^ 'Stack is full'! !
 
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
@@ -385,30 +515,46 @@ devolverOOStack
 	^pila! !
 
 
-!SentenceFinderByPrefix methodsFor: 'find' stamp: 'FH 5/14/2022 18:21:27'!
+!SentenceFinderByPrefix methodsFor: 'find' stamp: 'Te 5/15/2022 20:47:50'!
 find: aPrefix
 
 	"Dado un prefijo se encarga de devolver todas las oraciones almacenadas en la pila que contengan dicho prefijo."
 	
-	|pilaAux palabrasConElPrefix|
-
-	(aPrefix = '')ifTrue:[self error: SentenceFinderByPrefix PrefijoErrorDescription].
-	(aPrefix includes: $ )ifTrue:[self error: SentenceFinderByPrefix PrefijoErrorDescription].
-	
-	pilaAux := OOStack new.
-	palabrasConElPrefix := OrderedCollection new.
-	 
-	pila size timesRepeat: [
-		pilaAux push: (pila pop).
-		(pilaAux top beginsWith: aPrefix) ifTrue: [palabrasConElPrefix add: (pilaAux top)].
-		].
-	pilaAux size timesRepeat: [pila push: (pilaAux pop)].
+	|palabrasConElPrefix|
+	self aPrefixIsValid:aPrefix.
+	 palabrasConElPrefix := self findWordsWithPrefix:aPrefix.
 	^palabrasConElPrefix.! !
 
 
 !SentenceFinderByPrefix methodsFor: 'initialization' stamp: 'FH 5/14/2022 13:13:41'!
 initializeWith: anOOStack
 	pila := anOOStack.! !
+
+
+!SentenceFinderByPrefix methodsFor: 'private' stamp: 'Te 5/15/2022 20:49:31'!
+aPrefixIsValid:aPrefix
+	
+	((aPrefix = '') or:(aPrefix includes: $ ))ifTrue:
+		[self error: SentenceFinderByPrefix PrefijoErrorDescription].! !
+
+!SentenceFinderByPrefix methodsFor: 'private' stamp: 'Te 5/15/2022 20:46:12'!
+findWordsWithPrefix:aPrefix
+
+	|palabrasConElPrefix pilaAux|
+	palabrasConElPrefix := OrderedCollection new.
+	pilaAux := OOStack new.
+		pila size timesRepeat: [
+		pilaAux push: (pila pop).
+		(pilaAux top beginsWith: aPrefix) ifTrue: 
+			[palabrasConElPrefix add: (pilaAux top)]].
+	self reconstructStack: pilaAux .
+	
+	^palabrasConElPrefix.! !
+
+!SentenceFinderByPrefix methodsFor: 'private' stamp: 'Te 5/15/2022 20:36:02'!
+reconstructStack:anStack
+	anStack size timesRepeat: [pila push: (anStack pop)]
+	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
