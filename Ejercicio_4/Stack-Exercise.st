@@ -5,6 +5,15 @@ TestCase subclass: #OOStackTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 11:54:33'!
+assertErrorLimiteNoEsUnEntero:unLimiteIncorrecto
+	|limitedStack|
+	self
+	should: [limitedStack := OOStackLimitada new initializeWithALimit: (unLimiteIncorrecto ).]
+	raise: Error - MessageNotUnderstood 
+	withExceptionDo: [ :anError |
+		self assert: anError messageText = OOStackLimitada limitMustBeAnIntegerErrorDescription ].! !
+
 !OOStackTest methodsFor: 'test' stamp: 'HernanWilkinson 5/7/2012 11:30'!
 test01StackShouldBeEmptyWhenCreated
 
@@ -136,6 +145,60 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 		
 ! !
 
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 10:55:02'!
+test11LimitedStackCanStoreWithinLimit
+	|limitedStack|
+	
+	limitedStack := OOStackLimitada new initializeWithALimit: 2.
+	limitedStack push: 'something'.
+	limitedStack push: 'another'.	
+	self deny: limitedStack isEmpty.
+	
+	! !
+
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 10:56:29'!
+test12LimitedStackCannotStoreBeyondLimit
+	|limitedStack|
+	
+	limitedStack := OOStackLimitada new initializeWithALimit: 2.
+	limitedStack push: 'something'.
+	limitedStack push: 'another'.	
+	self
+	should: [ limitedStack push: 'thisWillFail' ]
+	raise: Error - MessageNotUnderstood 
+	withExceptionDo: [ :anError |
+		self assert: anError messageText = OOStackLimitada stackFullErrorDescription].! !
+
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 11:20:40'!
+test13LimitedStackCanPushElementCorrectlyAfterBeingFull
+	| stack firstPushedObject secondPushedObject thirdPushedObject|
+	
+	stack := OOStackLimitada new initializeWithALimit: 2.
+	firstPushedObject := 'first'.
+	secondPushedObject := 'second'.
+	thirdPushedObject := 'third'.
+	
+	stack push: firstPushedObject.
+	stack push: secondPushedObject.
+	
+	self assert: stack pop = secondPushedObject.
+	stack push: thirdPushedObject.
+	self assert: stack pop = thirdPushedObject.
+	self assert: stack pop = firstPushedObject.
+	self assert: stack isEmpty 
+	! !
+
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 11:54:59'!
+test14LimitedStackCannotInitializeWithAString
+	
+	self assertErrorLimiteNoEsUnEntero: 'a'! !
+
+!OOStackTest methodsFor: 'test' stamp: 'Te 5/16/2022 11:56:17'!
+test15LimitedStackCannotInitializeWithANegativeNumber
+	
+	
+	self assertErrorLimiteNoEsUnEntero:-4.! !
+
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
@@ -144,15 +207,35 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:38:46'!
-createAnStackWithFourElements
-	|stack|
-	stack := OOStack new.
-	    stack push: primerPalabra.
-	    stack push: segundaPalabra.
-	    stack push: terceraPalabra.
-	    stack push: cuartaPalabra.	
-	^stack! !
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:33:54'!
+assertFailsWithAnInvalidPrefix:aPrefix
+	| stack finder |
+	stack := self createAnStackWithFourElements.
+	finder := SentenceFinderByPrefix with: stack.
+	self assertThatABlockFailsWithACertainError: [finder find:aPrefix ]! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 22:49:40'!
+assertStackDoesntChangeWithAStack:aStack
+	self assert: aStack pop = cuartaPalabra .
+	self assert: aStack pop = terceraPalabra .
+	self assert: aStack pop = segundaPalabra .
+	self assert: aStack pop = primerPalabra .! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:27:34'!
+assertThatABlock: aBlock FailsWithACertainError: aCertainError
+	self
+		should: [ aBlock]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 21:29:45'!
+assertThatABlockFailsWithACertainError: aBlock 
+	self
+		should: aBlock
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
 
 !SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/14/2022 17:17:12'!
 test01assertFindIsCaseSensitive
@@ -217,13 +300,13 @@ test07assertSentenceFinderByPrefixInitializeWithTheSameStackGiven
 	finder := SentenceFinderByPrefix with: stackWithFourElements.
 	self assertStackDoesntChangeWithAStack:finder devolverOOStack.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/15/2022 22:47:18'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'Te 5/16/2022 10:41:45'!
 test08assertThatStackDoesntChangeAfterFind
 
 	|finder|
 	finder := SentenceFinderByPrefix with: stackWithFourElements.
 	finder find:'fi'.
-	self assertStackDoesntChange.
+	self assertStackDoesntChangeWithAStack: stackWithFourElements.
 	
 	! !
 
@@ -236,6 +319,16 @@ test09assertFindWithAPrefixWithAnEmptyStackReturnsAnEmptyColection
 	self assert: colection isEmpty.! !
 
 
+!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'Te 5/15/2022 21:38:46'!
+createAnStackWithFourElements
+	|stack|
+	stack := OOStack new.
+	    stack push: primerPalabra.
+	    stack push: segundaPalabra.
+	    stack push: terceraPalabra.
+	    stack push: cuartaPalabra.	
+	^stack! !
+
 !SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'Te 5/15/2022 21:48:53'!
 setUp
 	primerPalabra := 'anana'.
@@ -244,44 +337,6 @@ setUp
 	cuartaPalabra := 'mandarina'.
 	stackWithFourElements := self createAnStackWithFourElements.
 	stackWithNoElements := OOStack new.! !
-
-
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:33:54'!
-assertFailsWithAnInvalidPrefix:aPrefix
-	| stack finder |
-	stack := self createAnStackWithFourElements.
-	finder := SentenceFinderByPrefix with: stack.
-	self assertThatABlockFailsWithACertainError: [finder find:aPrefix ]! !
-
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:47:06'!
-assertStackDoesntChange
-	self assert: stackWithFourElements pop = cuartaPalabra .
-	self assert: stackWithFourElements pop = terceraPalabra .
-	self assert: stackWithFourElements pop = segundaPalabra .
-	self assert: stackWithFourElements pop = primerPalabra .! !
-
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:49:40'!
-assertStackDoesntChangeWithAStack:aStack
-	self assert: aStack pop = cuartaPalabra .
-	self assert: aStack pop = terceraPalabra .
-	self assert: aStack pop = segundaPalabra .
-	self assert: aStack pop = primerPalabra .! !
-
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:27:34'!
-assertThatABlock: aBlock FailsWithACertainError: aCertainError
-	self
-		should: [ aBlock]
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
-
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 21:29:45'!
-assertThatABlockFailsWithACertainError: aBlock 
-	self
-		should: aBlock
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: anError messageText = SentenceFinderByPrefix PrefijoErrorDescription].! !
 
 
 !classDefinition: #EstadoDeLaPila category: 'Stack-Exercise'!
@@ -480,23 +535,29 @@ withSpace
 	^ self size < limite.! !
 
 
-!OOStackLimitada methodsFor: 'initialization' stamp: 'Te 5/15/2022 22:23:17'!
+!OOStackLimitada methodsFor: 'initialization' stamp: 'Te 5/16/2022 11:57:06'!
 initializeWithALimit: unLimite
 	contenido := OrderedCollection new.
 	estado := EstadoDeLaPila with: self.
+	(((unLimite isInteger) not or:(unLimite <0)))ifTrue: [self error: OOStackLimitada  limitMustBeAnIntegerErrorDescription].
 	limite := unLimite.
+	
 	! !
 
 
-!OOStackLimitada methodsFor: 'push' stamp: 'Te 5/15/2022 22:35:16'!
+!OOStackLimitada methodsFor: 'push' stamp: 'Te 5/16/2022 10:57:29'!
 pushWhenStackIsFull
-	self error: OOStack stackFullErrorDescription.! !
+	self error: OOStackLimitada stackFullErrorDescription.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'OOStackLimitada class' category: 'Stack-Exercise'!
 OOStackLimitada class
 	instanceVariableNames: ''!
+
+!OOStackLimitada class methodsFor: 'as yet unclassified' stamp: 'Te 5/16/2022 11:19:54'!
+limitMustBeAnIntegerErrorDescription
+	 ^ 'limit must be a positive number'! !
 
 !OOStackLimitada class methodsFor: 'as yet unclassified' stamp: 'Te 5/15/2022 22:31:54'!
 stackFullErrorDescription
