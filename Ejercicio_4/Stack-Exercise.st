@@ -535,11 +535,12 @@ withSpace
 	^ self size < limite.! !
 
 
-!OOStackLimitada methodsFor: 'initialization' stamp: 'Te 5/16/2022 11:57:06'!
+!OOStackLimitada methodsFor: 'initialization' stamp: 'Te 5/16/2022 12:16:02'!
 initializeWithALimit: unLimite
 	contenido := OrderedCollection new.
 	estado := EstadoDeLaPila with: self.
-	(((unLimite isInteger) not or:(unLimite <0)))ifTrue: [self error: OOStackLimitada  limitMustBeAnIntegerErrorDescription].
+	(((unLimite isInteger) not))ifTrue: [self error: OOStackLimitada  limitMustBeAnIntegerErrorDescription].
+	(unLimite <0)ifTrue: [self error: OOStackLimitada  limitMustBeAnIntegerErrorDescription].
 	limite := unLimite.
 	
 	! !
