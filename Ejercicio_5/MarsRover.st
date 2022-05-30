@@ -1,100 +1,100 @@
 !classDefinition: #MarsRoverTest category: 'MarsRover'!
 TestCase subclass: #MarsRoverTest
-	instanceVariableNames: 'primerMarsRover segundoMarsRover marsRoverOrientadoHaciaElSur'
+	instanceVariableNames: 'primerMarsRoverOrientadoHaciaElNorte segundoMarsRoverOrientadoHaciaElNorte marsRoverOrientadoHaciaElSur'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:32:05'!
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test01NoSeMueveCuandoSeLeEnviaUnComandoVacio
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: ''.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 0).! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test02SeMueveCorrectamenteParaAdelanteEnOrientacionNorte
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'f'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 1).! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test03GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaApuntaHaciaOeste
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
+! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test04CuatroVecesUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaVuelveALaOrientacionInicial
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte.! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test05GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaDerechaApuntaHaciaEste
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
+! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test06GirarCuatroVecesUnMarsRoverConOrientacionInicialNorteHaciaLaDerechaVuelveALaOrientacionInicial
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte.! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:58'!
+test07EnviarVariosComandosPorSeparadoEsLoMismoQueMandarTodosJuntos
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'f'.
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'b'.
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	segundoMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'flbl'.
+	self assert: (primerMarsRoverOrientadoHaciaElNorte posicion = segundoMarsRoverOrientadoHaciaElNorte posicion and: primerMarsRoverOrientadoHaciaElNorte posicion = (1 @ 1)).! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test08LanzaErrorCuandoNoSeLeMandaUnStringComoComando
+	self
+		afirmarQueUnBloque: [ primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 1 ]
+		FalleConUnMarsRoverError: MarsRover comandoNecesitaSerUnStringErrorDescription.! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+test09SeEjecutaCorrectamenteHastaElCaracterErroneo
+	self
+		afirmarQueUnBloque: [ primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'ffabb' ]
+		FalleConUnMarsRoverError: MarsRover comandoErroneoEncontradoErrorDescription.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 2).! !
+
+
+!MarsRoverTest methodsFor: 'setUp' stamp: 'FH 5/30/2022 17:09:58'!
+setUp
+	primerMarsRoverOrientadoHaciaElNorte _ MarsRover conUnaOrientacionInicial: #Norte.
+	segundoMarsRoverOrientadoHaciaElNorte _ MarsRover conUnaOrientacionInicial: #Norte.
+	marsRoverOrientadoHaciaElSur _ MarsRover conUnaOrientacionInicial: #Sur.! !
+
+
+!MarsRoverTest methodsFor: 'privado' stamp: 'FH 5/29/2022 15:32:05'!
 afirmarQueUnBloque: unBloque FalleConUnMarsRoverError: unMarsRoverError
 	self
 		should: unBloque
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = unMarsRoverError ].! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-afirmarUnaOrientacion: unaOrientacion despuesDeUnComando: unComando
-	primerMarsRover realizarUnaSerieDeComandos: unComando.
-	self assert: (primerMarsRover orientacion esIgualA: unaOrientacion).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:51:40'!
-setUp
-	primerMarsRover _ MarsRover conUnaOrientacionInicial: #Norte.
-	segundoMarsRover _ MarsRover conUnaOrientacionInicial: #Norte.
-	marsRoverOrientadoHaciaElSur _ MarsRover conUnaOrientacionInicial: #Sur.! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified'!
-test01
-	self assert: primerMarsRover posicion = (0 @ 0).
-	self assert: (primerMarsRover orientacion esIgualA: #Norte).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-test02
-	primerMarsRover realizarUnaSerieDeComandos: 'f'.
-	self assert: primerMarsRover posicion = (0 @ 1).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-test03
-	primerMarsRover realizarUnaSerieDeComandos: ''.
-	self assert: primerMarsRover posicion = (0 @ 0).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified'!
-test04
-	self
-		afirmarUnaOrientacion: #Oeste
-		despuesDeUnComando: 'l'.
-	self
-		afirmarUnaOrientacion: #Sur
-		despuesDeUnComando: 'l'.
-	self
-		afirmarUnaOrientacion: #Este
-		despuesDeUnComando: 'l'.
-	self
-		afirmarUnaOrientacion: #Norte
-		despuesDeUnComando: 'l'.! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified'!
-test05
-	self
-		afirmarUnaOrientacion: #Este
-		despuesDeUnComando: 'r'.
-	self
-		afirmarUnaOrientacion: #Sur
-		despuesDeUnComando: 'r'.
-	self
-		afirmarUnaOrientacion: #Oeste
-		despuesDeUnComando: 'r'.
-	self
-		afirmarUnaOrientacion: #Norte
-		despuesDeUnComando: 'r'.! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-test06
-	primerMarsRover realizarUnaSerieDeComandos: 'f'.
-	primerMarsRover realizarUnaSerieDeComandos: 'l'.
-	primerMarsRover realizarUnaSerieDeComandos: 'b'.
-	primerMarsRover realizarUnaSerieDeComandos: 'l'.
-	segundoMarsRover realizarUnaSerieDeComandos: 'flbl'.
-	self assert: (primerMarsRover posicion = segundoMarsRover posicion and: primerMarsRover posicion = (1 @ 1)).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-test07
-	self
-		afirmarQueUnBloque: [ primerMarsRover realizarUnaSerieDeComandos: 1 ]
-		FalleConUnMarsRoverError: MarsRover comandoNecesitaSerUnStringErrorDescription.! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:06:06'!
-test08
-	self
-		afirmarQueUnBloque: [ primerMarsRover realizarUnaSerieDeComandos: 'ffabb' ]
-		FalleConUnMarsRoverError: MarsRover comandoErroneoEncontradoErrorDescription.
-	self assert: primerMarsRover posicion = (0 @ 2).! !
-
-!MarsRoverTest methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:52:07'!
-test09
-	self assert: marsRoverOrientadoHaciaElSur posicion = (0 @ 0).
-	self assert: (marsRoverOrientadoHaciaElSur orientacion esIgualA: #Sur).! !
 
 
 !classDefinition: #MarsRover category: 'MarsRover'!
@@ -104,40 +104,58 @@ Object subclass: #MarsRover
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRover methodsFor: 'movimiento'!
-orientacion
-	^ orientacion.! !
-
-!MarsRover methodsFor: 'movimiento'!
-posicion
-	^ posicion.! !
-
-!MarsRover methodsFor: 'movimiento' stamp: 'FH 5/29/2022 16:06:06'!
+!MarsRover methodsFor: 'movimiento' stamp: 'FH 5/30/2022 17:07:26'!
 realizarUnaSerieDeComandos: comandos
 	| movimiento |
-	comandos isString not ifTrue: [ self error: MarsRover comandoNecesitaSerUnStringErrorDescription ].
+	self esValidoLaSerieDeComandos: comandos.
 	comandos do: [ :comando |
-		(self esValidoElComando: comando) not ifTrue: [ self error: MarsRover comandoErroneoEncontradoErrorDescription ].
-		movimiento _ Movimiento
+		self esValidoElComando: comando.
+		movimiento _ MovimientoDelMarsRover
 			ConUnMarsRover: self
 			yUnComando: comando.
 		orientacion _ orientacion serCambiadaPorUnMovimiento: movimiento.
-		posicion _ orientacion orientarUnMovimiento: movimiento ].! !
+		posicion _ orientacion indicarUnMovimiento: movimiento ].! !
 
 
-!MarsRover methodsFor: 'privado' stamp: 'FH 5/29/2022 15:31:15'!
+!MarsRover methodsFor: 'privado' stamp: 'FH 5/30/2022 17:04:21'!
 esValidoElComando: comando
 	(comando = $f
 		or: comando = $b
 		or: comando = $l
-		or: comando = $r) ifTrue: [ ^ true ].
-	^ false.! !
+		or: comando = $r)not ifTrue: [ self error: MarsRover comandoErroneoEncontradoErrorDescription ].! !
+
+!MarsRover methodsFor: 'privado' stamp: 'FH 5/30/2022 17:07:08'!
+esValidoLaSerieDeComandos:comandos
+
+	comandos isString not ifTrue:
+		[ self error: MarsRover comandoNecesitaSerUnStringErrorDescription ].! !
 
 
-!MarsRover methodsFor: 'inicializacion' stamp: 'FH 5/29/2022 15:49:42'!
+!MarsRover methodsFor: 'inicializacion' stamp: 'Te} 5/29/2022 19:49:42'!
 conOrientacionInicial: unaOrientacion
 	posicion _ (0@0).
-	orientacion _ Orientacion ConUnaOrientacion: unaOrientacion.! !
+	orientacion _ OrientacionDelMarsRover ConUnaOrientacion: unaOrientacion.! !
+
+
+!MarsRover methodsFor: 'acceso' stamp: 'Te} 5/29/2022 19:06:56'!
+marsRoverEstaMirandoAlEste
+	^orientacion isKindOf: Este.! !
+
+!MarsRover methodsFor: 'acceso' stamp: 'Te} 5/29/2022 19:06:32'!
+marsRoverEstaMirandoAlNorte
+	^orientacion isKindOf: Norte.! !
+
+!MarsRover methodsFor: 'acceso' stamp: 'Te} 5/29/2022 19:06:43'!
+marsRoverEstaMirandoAlOeste
+	^orientacion isKindOf: Oeste.! !
+
+!MarsRover methodsFor: 'acceso' stamp: 'Te} 5/29/2022 19:06:50'!
+marsRoverEstaMirandoAlSur
+	^orientacion isKindOf: Sur.! !
+
+!MarsRover methodsFor: 'acceso'!
+posicion
+	^ posicion.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -160,67 +178,67 @@ conUnaOrientacionInicial: unaOrientacion
 	^self new conOrientacionInicial: unaOrientacion. ! !
 
 
-!classDefinition: #Movimiento category: 'MarsRover'!
-Object subclass: #Movimiento
+!classDefinition: #MovimientoDelMarsRover category: 'MarsRover'!
+Object subclass: #MovimientoDelMarsRover
 	instanceVariableNames: 'marsRover orientacion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Movimiento methodsFor: 'cambiarOrientacion'!
+!MovimientoDelMarsRover methodsFor: 'cambiarOrientacion'!
 cambiarOrientacionDesdeEste
 	^ Este new.! !
 
-!Movimiento methodsFor: 'cambiarOrientacion'!
+!MovimientoDelMarsRover methodsFor: 'cambiarOrientacion'!
 cambiarOrientacionDesdeNorte
 	^ Norte new.! !
 
-!Movimiento methodsFor: 'cambiarOrientacion'!
+!MovimientoDelMarsRover methodsFor: 'cambiarOrientacion'!
 cambiarOrientacionDesdeOeste
 	^ Oeste new.! !
 
-!Movimiento methodsFor: 'cambiarOrientacion'!
+!MovimientoDelMarsRover methodsFor: 'cambiarOrientacion'!
 cambiarOrientacionDesdeSur
 	^ Sur new.! !
 
 
-!Movimiento methodsFor: 'moverse'!
+!MovimientoDelMarsRover methodsFor: 'moverse'!
 conOrientacionHaciaEste
 	^ marsRover posicion.! !
 
-!Movimiento methodsFor: 'moverse'!
+!MovimientoDelMarsRover methodsFor: 'moverse'!
 conOrientacionHaciaNorte
 	^ marsRover posicion.! !
 
-!Movimiento methodsFor: 'moverse'!
+!MovimientoDelMarsRover methodsFor: 'moverse'!
 conOrientacionHaciaOeste
 	^ marsRover posicion.! !
 
-!Movimiento methodsFor: 'moverse'!
+!MovimientoDelMarsRover methodsFor: 'moverse'!
 conOrientacionHaciaSur
 	^ marsRover posicion.! !
 
 
-!Movimiento methodsFor: 'inicializacion' stamp: 'FH 5/29/2022 15:33:04'!
+!MovimientoDelMarsRover methodsFor: 'inicializacion' stamp: 'FH 5/29/2022 15:33:04'!
 conUnMarsRover: unMarsRover
 	marsRover _ unMarsRover.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Movimiento class' category: 'MarsRover'!
-Movimiento class
+!classDefinition: 'MovimientoDelMarsRover class' category: 'MarsRover'!
+MovimientoDelMarsRover class
 	instanceVariableNames: ''!
 
-!Movimiento class methodsFor: 'creacion de instancia' stamp: 'FH 5/29/2022 16:04:18'!
+!MovimientoDelMarsRover class methodsFor: 'creacion de instancia' stamp: 'Te} 5/29/2022 19:49:29'!
 ConUnMarsRover: unMarsRover yUnComando: comando
 	| movimientoEncontrado |
-	movimientoEncontrado _ Movimiento subclasses detect: [ :subclase |
+	movimientoEncontrado _ MovimientoDelMarsRover subclasses detect: [ :subclase |
 		subclase IncluyeAUnComando: comando ].
 	^ movimientoEncontrado new conUnMarsRover: unMarsRover.! !
 
 
 !classDefinition: #Adelante category: 'MarsRover'!
-Movimiento subclass: #Adelante
+MovimientoDelMarsRover subclass: #Adelante
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -254,7 +272,7 @@ IncluyeAUnComando: unComando
 
 
 !classDefinition: #Atras category: 'MarsRover'!
-Movimiento subclass: #Atras
+MovimientoDelMarsRover subclass: #Atras
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -288,7 +306,7 @@ IncluyeAUnComando: unComando
 
 
 !classDefinition: #GirarDerecha category: 'MarsRover'!
-Movimiento subclass: #GirarDerecha
+MovimientoDelMarsRover subclass: #GirarDerecha
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -322,7 +340,7 @@ IncluyeAUnComando: unComando
 
 
 !classDefinition: #GirarIzquierda category: 'MarsRover'!
-Movimiento subclass: #GirarIzquierda
+MovimientoDelMarsRover subclass: #GirarIzquierda
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -355,56 +373,47 @@ IncluyeAUnComando: unComando
 	^ unComando = $l.! !
 
 
-!classDefinition: #Orientacion category: 'MarsRover'!
-Object subclass: #Orientacion
+!classDefinition: #OrientacionDelMarsRover category: 'MarsRover'!
+Object subclass: #OrientacionDelMarsRover
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Orientacion methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:54:37'!
-esIgualA: unaOrientacion
+!OrientacionDelMarsRover methodsFor: 'funcionamiento' stamp: 'Te} 5/29/2022 18:30:00'!
+indicarUnMovimiento: unMovimiento
 	self subclassResponsibility.! !
 
-!Orientacion methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:00:14'!
-orientarUnMovimiento: unMovimiento
-	self subclassResponsibility.! !
-
-!Orientacion methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:56:03'!
+!OrientacionDelMarsRover methodsFor: 'funcionamiento' stamp: 'FH 5/29/2022 15:56:03'!
 serCambiadaPorUnMovimiento: unMovimiento
 	self subclassResponsibility.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Orientacion class' category: 'MarsRover'!
-Orientacion class
+!classDefinition: 'OrientacionDelMarsRover class' category: 'MarsRover'!
+OrientacionDelMarsRover class
 	instanceVariableNames: ''!
 
-!Orientacion class methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:43:56'!
+!OrientacionDelMarsRover class methodsFor: 'creacionDeInstancia' stamp: 'Te} 5/29/2022 19:49:42'!
 ConUnaOrientacion: unaOrientacion
 	| subclaseEncontrada |
-	subclaseEncontrada _ Orientacion subclasses detect: [ :subclase |
+	subclaseEncontrada _ OrientacionDelMarsRover subclasses detect: [ :subclase |
 	subclase esDeEstaOrientacion: unaOrientacion ].
 	^ subclaseEncontrada new.! !
 
 
 !classDefinition: #Este category: 'MarsRover'!
-Orientacion subclass: #Este
+OrientacionDelMarsRover subclass: #Este
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Este methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:36:07'!
-esIgualA: unaOrientacion
-	unaOrientacion = #Este ifTrue: [ ^ true ].
-	^ false.! !
-
-!Este methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:00:14'!
-orientarUnMovimiento: unMovimiento
+!Este methodsFor: 'funcionamiento' stamp: 'Te} 5/29/2022 18:30:00'!
+indicarUnMovimiento: unMovimiento
 	^ unMovimiento conOrientacionHaciaEste.! !
 
-!Este methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:56:03'!
+!Este methodsFor: 'funcionamiento' stamp: 'FH 5/29/2022 15:56:03'!
 serCambiadaPorUnMovimiento: unMovimiento
 	^ unMovimiento cambiarOrientacionDesdeEste.! !
 
@@ -420,22 +429,17 @@ esDeEstaOrientacion: unaOrientacion
 
 
 !classDefinition: #Norte category: 'MarsRover'!
-Orientacion subclass: #Norte
+OrientacionDelMarsRover subclass: #Norte
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Norte methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:36:12'!
-esIgualA: unaOrientacion
-	unaOrientacion = #Norte ifTrue: [ ^ true ].
-	^ false.! !
-
-!Norte methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:00:14'!
-orientarUnMovimiento: unMovimiento
+!Norte methodsFor: 'funcionamiento' stamp: 'Te} 5/29/2022 18:30:00'!
+indicarUnMovimiento: unMovimiento
 	^ unMovimiento conOrientacionHaciaNorte.! !
 
-!Norte methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:56:03'!
+!Norte methodsFor: 'funcionamiento' stamp: 'FH 5/29/2022 15:56:03'!
 serCambiadaPorUnMovimiento: unMovimiento
 	^ unMovimiento cambiarOrientacionDesdeNorte.! !
 
@@ -451,22 +455,17 @@ esDeEstaOrientacion: unaOrientacion
 
 
 !classDefinition: #Oeste category: 'MarsRover'!
-Orientacion subclass: #Oeste
+OrientacionDelMarsRover subclass: #Oeste
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Oeste methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:36:18'!
-esIgualA: unaOrientacion
-	unaOrientacion = #Oeste ifTrue: [ ^ true ].
-	^ false.! !
-
-!Oeste methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:00:14'!
-orientarUnMovimiento: unMovimiento
+!Oeste methodsFor: 'funcionamiento' stamp: 'Te} 5/29/2022 18:30:00'!
+indicarUnMovimiento: unMovimiento
 	^ unMovimiento conOrientacionHaciaOeste.! !
 
-!Oeste methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:56:03'!
+!Oeste methodsFor: 'funcionamiento' stamp: 'FH 5/29/2022 15:56:03'!
 serCambiadaPorUnMovimiento: unMovimiento
 	^ unMovimiento cambiarOrientacionDesdeOeste.! !
 
@@ -482,22 +481,17 @@ esDeEstaOrientacion: unaOrientacion
 
 
 !classDefinition: #Sur category: 'MarsRover'!
-Orientacion subclass: #Sur
+OrientacionDelMarsRover subclass: #Sur
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!Sur methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:36:23'!
-esIgualA: unaOrientacion
-	unaOrientacion = #Sur ifTrue: [ ^ true ].
-	^ false.! !
-
-!Sur methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 16:00:14'!
-orientarUnMovimiento: unMovimiento
+!Sur methodsFor: 'funcionamiento' stamp: 'Te} 5/29/2022 18:30:00'!
+indicarUnMovimiento: unMovimiento
 	^ unMovimiento conOrientacionHaciaSur.! !
 
-!Sur methodsFor: 'as yet unclassified' stamp: 'FH 5/29/2022 15:56:03'!
+!Sur methodsFor: 'funcionamiento' stamp: 'FH 5/29/2022 15:56:03'!
 serCambiadaPorUnMovimiento: unMovimiento
 	^ unMovimiento cambiarOrientacionDesdeSur.! !
 
