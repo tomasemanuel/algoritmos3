@@ -5,61 +5,25 @@ TestCase subclass: #MarsRoverTest
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:33:21'!
 test01NoSeMueveCuandoSeLeEnviaUnComandoVacio
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: ''.
-	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 0).! !
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeMovimiento:'' ySeAfirmaLaNuevaPosicion:(0 @ 0).
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: ''.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 0)."! !
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:33:21'!
 test02SeMueveCorrectamenteParaAdelanteEnOrientacionNorte
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'f'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 1).! !
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeMovimiento:'f' ySeAfirmaLaNuevaPosicion:(0 @ 1).
+	
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'f'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = (0 @ 1)."! !
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test03GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaApuntaHaciaOeste
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
-! !
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:33:21'!
+test03SeMueveCorrectamenteEnviandoVariosComandos
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeMovimiento:'fflflb' ySeAfirmaLaNuevaPosicion:(-1 @ 3).! !
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test04CuatroVecesUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaVuelveALaOrientacionInicial
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte.! !
-
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test05GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaDerechaApuntaHaciaEste
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
-! !
-
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test06GirarCuatroVecesUnMarsRoverConOrientacionInicialNorteHaciaLaDerechaVuelveALaOrientacionInicial
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
-	
-	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
-	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte.! !
-
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:58'!
-test07EnviarVariosComandosPorSeparadoEsLoMismoQueMandarTodosJuntos
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:32:36'!
+test04EnviarVariosComandosPorSeparadoEsLoMismoQueMandarTodosJuntos
 	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'f'.
 	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
 	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'b'.
@@ -67,14 +31,73 @@ test07EnviarVariosComandosPorSeparadoEsLoMismoQueMandarTodosJuntos
 	segundoMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'flbl'.
 	self assert: (primerMarsRoverOrientadoHaciaElNorte posicion = segundoMarsRoverOrientadoHaciaElNorte posicion and: primerMarsRoverOrientadoHaciaElNorte posicion = (1 @ 1)).! !
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test08LanzaErrorCuandoNoSeLeMandaUnStringComoComando
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:33:03'!
+test05GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaApuntaHaciaOeste
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'l' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste].
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste."
+! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:32:57'!
+test06CuatroVecesUnMarsRoverDeOrientacionInicialNorteHaciaLaIzquierdaVuelveALaOrientacionInicial
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'l' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste].
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'l' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur].
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'l' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste].
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'l' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte].
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'l'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte."! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:32:49'!
+test07GirarUnaVezUnMarsRoverDeOrientacionInicialNorteHaciaLaDerechaApuntaHaciaEste
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'r' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste].
+	
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste."
+! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:32:43'!
+test08GirarCuatroVecesUnMarsRoverConOrientacionInicialNorteHaciaLaDerechaVuelveALaOrientacionInicial
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'r' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste].
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'r' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur].
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'r' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste].
+	
+	self marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:'r' ySeAfirmaLaNuevaOrientacion:[primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte].
+	
+	"primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlEste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlSur.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlOeste.
+	
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'r'.
+	self assert: primerMarsRoverOrientadoHaciaElNorte marsRoverEstaMirandoAlNorte."! !
+
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:31:09'!
+test09LanzaErrorCuandoNoSeLeMandaUnStringComoComando
 	self
 		afirmarQueUnBloque: [ primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 1 ]
 		FalleConUnMarsRoverError: MarsRover comandoNecesitaSerUnStringErrorDescription.! !
 
-!MarsRoverTest methodsFor: 'testeo' stamp: 'FH 5/30/2022 17:09:39'!
-test09SeEjecutaCorrectamenteHastaElCaracterErroneo
+!MarsRoverTest methodsFor: 'testeo' stamp: 'Te 5/31/2022 16:30:55'!
+test10SeEjecutaCorrectamenteHastaElCaracterErroneo
 	self
 		afirmarQueUnBloque: [ primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: 'ffabb' ]
 		FalleConUnMarsRoverError: MarsRover comandoErroneoEncontradoErrorDescription.
@@ -95,6 +118,18 @@ afirmarQueUnBloque: unBloque FalleConUnMarsRoverError: unMarsRoverError
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = unMarsRoverError ].! !
+
+!MarsRoverTest methodsFor: 'privado' stamp: 'Te 5/31/2022 16:33:21'!
+marsRoverOrientadoHaciaElNorteRecibeUnComandoDeMovimiento:unComandoDeMovimiento ySeAfirmaLaNuevaPosicion:NuevaPosicion
+
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: unComandoDeMovimiento.
+	self assert: primerMarsRoverOrientadoHaciaElNorte posicion = NuevaPosicion.! !
+
+!MarsRoverTest methodsFor: 'privado' stamp: 'Te 5/31/2022 16:24:21'!
+marsRoverOrientadoHaciaElNorteRecibeUnComandoDeOrientacion:unComandoDeOrientacion ySeAfirmaLaNuevaOrientacion:BloqueCorrectaOrientacion
+	primerMarsRoverOrientadoHaciaElNorte realizarUnaSerieDeComandos: unComandoDeOrientacion.
+	self assert: BloqueCorrectaOrientacion value.
+	! !
 
 
 !classDefinition: #MarsRover category: 'MarsRover'!
