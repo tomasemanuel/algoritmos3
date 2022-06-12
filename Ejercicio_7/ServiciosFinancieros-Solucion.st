@@ -302,6 +302,181 @@ test07AccountKnowsItsTransactions
 ! !
 
 
+!classDefinition: #ReportsTest category: 'ServiciosFinancieros-Solucion'!
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Solucion'!
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 12:57:30'!
+test11
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	report _ Report withAccount: account1.
+	
+	self assert:(0 * peso = (report netTransfer)). ! !
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:00:21'!
+test12
+	|report account1 account2|
+	
+	account1 _ ReceptiveAccount new.
+	account2 _ ReceptiveAccount new.
+	Transfer amount: 100 * peso from: account1 to: account2. 
+	report _ Report withAccount: account1.
+	
+	self assert:(-100 * peso = (report netTransfer)). ! !
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:50:30'!
+test13
+	|report account1 account2|
+	
+	account1 _ ReceptiveAccount new.
+	account2 _ ReceptiveAccount new.
+	Deposit register: 20*peso on: account1.
+	Transfer amount: 500 * peso from: account2 to: account1. 
+	Transfer amount: 100 * peso from: account1 to: account2. 
+	report _ Report withAccount: account1.
+	
+	self assert:(400 * peso = (report netTransfer)). ! !
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:55:53'!
+test14
+	|report account1 account2 portfolio|
+	
+	account1 _ ReceptiveAccount new.
+	account2 _ ReceptiveAccount new.
+	Deposit register: 20*peso on: account1.
+	Withdraw register: 20*peso on: account2.
+	Transfer amount: 500 * peso from: account2 to: account1. 
+	Transfer amount: 100 * peso from: account1 to: account2.
+	portfolio _ Portfolio with: account1 with: account2.
+	report _ Report withAccount: portfolio.
+	
+	self assert:(0 * peso = (report netTransfer)). ! !
+
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:54:25'!
+test01
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	report _ Report withAccount: account1.
+	
+	self assert:('Balance = 0 * pesos'= (report accountSummary)). ! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:49:35'!
+test02
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	Deposit register: 100 * peso on: account1. 
+	report _ Report withAccount: account1.
+	
+	self assert:( 
+	'Deposit of 100 * pesosBalance = 100 * pesos'= (report accountSummary)). ! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:49:40'!
+test03
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	Withdraw register: 100 * peso on: account1. 
+	report _ Report withAccount: account1.
+	
+	self assert:( 
+	'Withdraw of 100 * pesosBalance = -100 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:27:28'!
+test04
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	Deposit register: 150 * peso on: account1.
+	Withdraw register: 100 * peso on: account1. 
+	report _ Report withAccount: account1.
+	
+	self assert:( 
+	'Deposit of 150 * pesosWithdraw of 100 * pesosBalance = 50 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:28:30'!
+test05
+	|report account1|
+	
+	account1 _ ReceptiveAccount new.
+	Withdraw register: 100 * peso on: account1.
+	Deposit register: 150 * peso on: account1. 
+	report _ Report withAccount: account1.
+	
+	self assert:( 
+	'Withdraw of 100 * pesosDeposit of 150 * pesosBalance = 50 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:35:51'!
+test06
+	|report account1 account2|
+	
+	account1 _ ReceptiveAccount new.
+	account2 _ ReceptiveAccount new.
+	Transfer amount: 100*peso from: account2 to: account1.
+	report _ Report withAccount: account1.
+	
+	self assert:(
+	'Transference`s Deposit of 100 * pesosBalance = 100 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:39:45'!
+test07
+	|report account1 account2|
+	
+	account1 _ ReceptiveAccount new.
+	account2 _ ReceptiveAccount new.
+	Deposit register: 200 * peso on: account1.
+	Deposit register: 150 * peso on: account1.
+	Withdraw register: 100 * peso on: account1. 
+	Transfer amount: 100*peso from: account2 to: account1.
+	Transfer amount: 50*peso from: account1 to: account2.
+	report _ Report withAccount: account1.
+	
+	self assert:(
+	'Deposit of 200 * pesosDeposit of 150 * pesosWithdraw of 100 * pesosTransference`s Deposit of 100 * pesosTransference`s Withdraw of 50 * pesosBalance = 300 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:51:38'!
+test08
+	|report portfolio|
+	
+	portfolio _ Portfolio new.
+	report _ Report withAccount: portfolio.
+	
+	self assert:(	'Balance = 0 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:56:42'!
+test09
+	|report account1 portfolio|
+	
+	account1 _ ReceptiveAccount new.
+	Deposit register: 150 * peso on: account1.
+	Withdraw register: 100 * peso on: account1. 
+	portfolio _ Portfolio with: account1.
+	report _ Report withAccount: portfolio.
+	
+	self assert:('Deposit of 150 * pesosWithdraw of 100 * pesosBalance = 50 * pesos'= (report accountSummary)).! !
+
+!ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 20:01:37'!
+test10
+	|report account1 account2 portfolio|
+	
+	account1 _ ReceptiveAccount new.
+	Deposit register: 150 * peso on: account1.
+	Withdraw register: 100 * peso on: account1. 
+	account2 _ ReceptiveAccount new.
+	Transfer amount: 50*peso from: account1 to: account2.
+	portfolio _ Portfolio with: account1 with: account2.
+	report _ Report withAccount: portfolio.
+	
+	self assert:('Deposit of 150 * pesosWithdraw of 100 * pesosTransference`s Withdraw of 50 * pesosTransference`s Deposit of 50 * pesosBalance = 50 * pesos'= (report accountSummary)).! !
+
+
 !classDefinition: #TransferTest category: 'ServiciosFinancieros-Solucion'!
 TestCase subclass: #TransferTest
 	instanceVariableNames: ''
@@ -460,10 +635,10 @@ initialize
 	parents := OrderedCollection new.! !
 
 
-!Portfolio methodsFor: 'main protocol' stamp: 'HAW 5/25/2019 11:19:36'!
+!Portfolio methodsFor: 'main protocol' stamp: 'FH 6/11/2022 19:52:43'!
 balance
 	
-	^accounts sum: [ :anAccount | anAccount balance ] ifEmpty: [ 0 ]! !
+	^accounts sum: [ :anAccount | anAccount balance ] ifEmpty: [ 0*peso ]! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'HAW 5/25/2019 11:28:29'!
 hasRegistered: aTransaction
@@ -596,11 +771,11 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HAW 5/25/2019 11:24:46'!
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'FH 6/11/2022 19:53:16'!
 balance
 
 	^transactions 
-		inject: 0
+		inject: (0*peso)
 		into: [ :currentBalance :transaction | transaction affectBalance: currentBalance ]! !
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'NR 10/21/2019 18:55:56'!
@@ -645,6 +820,10 @@ Object subclass: #AccountTransaction
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
+!AccountTransaction methodsFor: 'value' stamp: 'FH 6/12/2022 13:59:39'!
+AddTransferLegValueTo: aNetTransfer
+	^aNetTransfer.! !
+
 !AccountTransaction methodsFor: 'value' stamp: 'HernanWilkinson 9/12/2011 12:25'!
 value 
 
@@ -653,6 +832,11 @@ value
 
 !AccountTransaction methodsFor: 'balance' stamp: 'HAW 5/25/2019 11:25:39'!
 affectBalance: aBalance
+
+	self subclassResponsibility ! !
+
+!AccountTransaction methodsFor: 'balance' stamp: 'FH 6/12/2022 13:34:40'!
+asStringAddTo: aStringOfTransactions
 
 	self subclassResponsibility ! !
 
@@ -680,6 +864,11 @@ value
 affectBalance: aBalance
 
 	^aBalance + value ! !
+
+!Deposit methodsFor: 'balance' stamp: 'FH 6/12/2022 13:39:11'!
+asStringAddTo: aStringOfTransactions
+
+	^aStringOfTransactions,'Deposit of ',(value asString).! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -710,6 +899,10 @@ AccountTransaction subclass: #TransferLeg
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
+
+!TransferLeg methodsFor: 'value' stamp: 'FH 6/12/2022 13:48:27'!
+AddTransferLegValueTo: aNetTransfer
+	^self affectBalance: aNetTransfer. ! !
 
 !TransferLeg methodsFor: 'value' stamp: 'LL 9/20/2020 22:27:32'!
 value
@@ -757,6 +950,11 @@ affectBalance: aBalance
 
 	^aBalance + self value! !
 
+!TransferDepositLeg methodsFor: 'balance' stamp: 'FH 6/12/2022 13:41:44'!
+asStringAddTo: aStringOfTransactions
+
+	^aStringOfTransactions,'Transference`s Deposit of ',(self value asString).! !
+
 
 !classDefinition: #TransferWithdrawLeg category: 'ServiciosFinancieros-Solucion'!
 TransferLeg subclass: #TransferWithdrawLeg
@@ -775,6 +973,11 @@ depositLeg
 affectBalance: aBalance
 
 	^aBalance - self value! !
+
+!TransferWithdrawLeg methodsFor: 'balance' stamp: 'FH 6/12/2022 13:41:34'!
+asStringAddTo: aStringOfTransactions
+
+	^aStringOfTransactions,'Transference`s Withdraw of ',(self value asString).! !
 
 
 !classDefinition: #Withdraw category: 'ServiciosFinancieros-Solucion'!
@@ -801,6 +1004,11 @@ affectBalance: aBalance
 
 	^aBalance - value! !
 
+!Withdraw methodsFor: 'balance' stamp: 'FH 6/12/2022 13:39:00'!
+asStringAddTo: aStringOfTransactions
+
+	^aStringOfTransactions,'Withdraw of ',(value asString).! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Withdraw class' category: 'ServiciosFinancieros-Solucion'!
@@ -822,6 +1030,48 @@ register: aValue on: account
 	account register: transaction.
 		
 	^ transaction! !
+
+
+!classDefinition: #Report category: 'ServiciosFinancieros-Solucion'!
+Object subclass: #Report
+	instanceVariableNames: 'account'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Solucion'!
+
+!Report methodsFor: 'initialization' stamp: 'FH 6/11/2022 18:16:07'!
+initializeWithAccount: anAccount 
+	account _ anAccount.! !
+
+
+!Report methodsFor: 'as yet unclassified' stamp: 'FH 6/12/2022 14:02:26'!
+accountSummary
+	|transactionsSummary|
+	transactionsSummary _ self createSummary.
+	^transactionsSummary,'Balance = ',(account balance)asString.! !
+
+!Report methodsFor: 'as yet unclassified' stamp: 'FH 6/12/2022 13:42:36'!
+createSummary	
+	^account transactions 
+		inject: ''
+		into: [ :stringOfTransactions :aTransaction | aTransaction asStringAddTo: stringOfTransactions ].! !
+
+!Report methodsFor: 'as yet unclassified' stamp: 'FH 6/12/2022 13:48:53'!
+netTransfer
+	^account transactions 
+		inject: 0*peso
+		into: [ :netTransfer :aTransaction | aTransaction AddTransferLegValueTo: netTransfer ].! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Report class' category: 'ServiciosFinancieros-Solucion'!
+Report class
+	instanceVariableNames: ''!
+
+!Report class methodsFor: 'instance creation' stamp: 'FH 6/11/2022 18:15:36'!
+withAccount: anAccount 
+
+	^self new initializeWithAccount: anAccount. ! !
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Solucion'!
