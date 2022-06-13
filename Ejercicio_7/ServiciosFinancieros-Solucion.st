@@ -309,53 +309,53 @@ TestCase subclass: #ReportsTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 12:57:30'!
-test11
-	|report account1|
-	
-	account1 _ ReceptiveAccount new.
-	report _ Report withAccount: account1.
-	
-	self assert:(0 * peso = (report netTransfer)). ! !
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'k 6/13/2022 15:44:56'!
+test11Net
+    |report account1|
 
-!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:00:21'!
-test12
-	|report account1 account2|
-	
-	account1 _ ReceptiveAccount new.
-	account2 _ ReceptiveAccount new.
-	Transfer amount: 100 * peso from: account1 to: account2. 
-	report _ Report withAccount: account1.
-	
-	self assert:(-100 * peso = (report netTransfer)). ! !
+    account1 _ ReceptiveAccount new.
+    report _  Report withAccount: account1.
 
-!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:50:30'!
-test13
-	|report account1 account2|
-	
-	account1 _ ReceptiveAccount new.
-	account2 _ ReceptiveAccount new.
-	Deposit register: 20*peso on: account1.
-	Transfer amount: 500 * peso from: account2 to: account1. 
-	Transfer amount: 100 * peso from: account1 to: account2. 
-	report _ Report withAccount: account1.
-	
-	self assert:(400 * peso = (report netTransfer)). ! !
+    self assert:(0 * peso = (report netTransfer)).! !
 
-!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'FH 6/12/2022 13:55:53'!
-test14
-	|report account1 account2 portfolio|
-	
-	account1 _ ReceptiveAccount new.
-	account2 _ ReceptiveAccount new.
-	Deposit register: 20*peso on: account1.
-	Withdraw register: 20*peso on: account2.
-	Transfer amount: 500 * peso from: account2 to: account1. 
-	Transfer amount: 100 * peso from: account1 to: account2.
-	portfolio _ Portfolio with: account1 with: account2.
-	report _ Report withAccount: portfolio.
-	
-	self assert:(0 * peso = (report netTransfer)). ! !
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'k 6/13/2022 15:45:16'!
+test12Net
+    |report account1 account2|
+
+    account1  _ ReceptiveAccount new.
+    account2 _  ReceptiveAccount new.
+    Transfer amount: 100 * peso from: account1 to: account2. 
+    report _ Report withAccount: account1.
+
+    self assert:(-100 * peso = (report netTransfer)).! !
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'k 6/13/2022 15:47:30'!
+test13Net
+    |report account1 account2|
+
+    account1 _ ReceptiveAccount new.
+    account2 _ ReceptiveAccount new.
+    Deposit register: 20 * peso on: account1.
+    Transfer amount: 500 * peso from: account2 to: account1. 
+    Transfer amount: 100 * peso from: account1 to: account2. 
+    report _ Report withAccount: account1.
+
+    self assert:(400 * peso = (report netTransfer)).! !
+
+!ReportsTest methodsFor: 'tests NetTransferReports' stamp: 'k 6/13/2022 15:47:21'!
+test14Net
+    |report account1 account2 portfolio|
+
+    account1 _  ReceptiveAccount new.
+    account2 _ ReceptiveAccount new.
+    Deposit register: 20* peso on: account1.
+    Withdraw register: 20* peso on: account2.
+    Transfer amount: 500 * peso from: account2 to: account1. 
+    Transfer amount: 100 * peso from: account1 to: account2.
+    portfolio _ Portfolio with: account1 with: account2.
+    report _ Report withAccount: portfolio.
+
+    self assert:(0 * peso = (report netTransfer)).! !
 
 
 !ReportsTest methodsFor: 'tests Account Summary' stamp: 'FH 6/11/2022 19:54:25'!
@@ -475,6 +475,128 @@ test10
 	report _ Report withAccount: portfolio.
 	
 	self assert:('Deposit of 150 * pesosWithdraw of 100 * pesosTransference`s Withdraw of 50 * pesosTransference`s Deposit of 50 * pesosBalance = 50 * pesos'= (report accountSummary)).! !
+
+
+!ReportsTest methodsFor: 'tests ExtraPart2' stamp: 'k 6/13/2022 15:39:19'!
+test15
+
+	| familyPortfolio report |	
+	familyPortfolio := Portfolio named: 'Family Portfolio'.
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioBalance = 0 * pesos' = report portfolioDetailedTreePrinter.
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart2' stamp: 'k 6/13/2022 15:47:07'!
+test16
+
+	| familyPortfolio report johnsAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	Deposit register: 100 * peso on: johnsAccount .
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount .
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioJohns AccountDeposit of 100 * pesosBalance = 100 * pesosBalance = 100 * pesos' = report portfolioDetailedTreePrinter .
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart2' stamp: 'k 6/13/2022 15:50:04'!
+test17
+
+	| familyPortfolio report johnsAccount angiesAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	Deposit register: 100 * peso on: johnsAccount.
+	angiesAccount := ReceptiveAccount named: 'Angies Account'.
+	Deposit register: 150 * peso on: angiesAccount.
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount with:angiesAccount .
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioJohns AccountDeposit of 100 * pesosBalance = 100 * pesosAngies AccountDeposit of 150 * pesosBalance = 150 * pesosBalance = 250 * pesos' = report portfolioDetailedTreePrinter .
+	
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart2' stamp: 'k 6/13/2022 15:55:00'!
+test18
+
+	| familyPortfolio report johnsAccount angiesAccount tomAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	Deposit register: 100 * peso on: johnsAccount.
+	angiesAccount := ReceptiveAccount named: 'Angies Account'.
+	Deposit register: 150 * peso on: angiesAccount.
+	tomAccount  _ ReceptiveAccount named: 'Tom Account'.
+	Transfer amount: 100*peso from: tomAccount to: johnsAccount.
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount with:angiesAccount .
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioJohns AccountDeposit of 100 * pesosTransference`s Deposit of 100 * pesosBalance = 200 * pesosAngies AccountDeposit of 150 * pesosBalance = 150 * pesosBalance = 350 * pesos' = report portfolioDetailedTreePrinter .
+	
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart2' stamp: 'k 6/13/2022 16:04:48'!
+test19
+	| familyPortfolio report johnsAccount childrenPortfolio tomAccount angiesAccount|
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	angiesAccount := ReceptiveAccount named: 'Angies Account'.
+	tomAccount := ReceptiveAccount named: 'Toms Account'.
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos' with:johnsAccount with: angiesAccount . 
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: tomAccount with:childrenPortfolio .
+	Deposit register: 150 * peso on: tomAccount . 
+	Withdraw register: 100 * peso on: tomAccount .
+	
+	Deposit register: 50 * peso on: johnsAccount .
+	Withdraw register: 10 * peso on: johnsAccount .
+	
+	Transfer amount: 100 *peso from: angiesAccount to: tomAccount .
+
+	report _ Report withAccount: familyPortfolio.  
+	
+	self assert: 'Family PortfolioToms AccountDeposit of 150 * pesosWithdraw of 100 * pesosTransference`s Deposit of 100 * pesosBalance = 150 * pesosPortfolio de hijosJohns AccountDeposit of 50 * pesosWithdraw of 10 * pesosBalance = 40 * pesosAngies AccountTransference`s Withdraw of 100 * pesosBalance = -100 * pesosBalance = -60 * pesosBalance = 90 * pesos' = report portfolioDetailedTreePrinter .
+	
+	! !
+
+
+!ReportsTest methodsFor: 'tests ExtraPart1' stamp: 'k 6/13/2022 15:36:10'!
+test11
+	
+	| familyPortfolio report |
+	familyPortfolio := Portfolio named: 'Family Portfolio'.
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family Portfolio' = report portfolioTreePrinter.
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart1' stamp: 'k 6/13/2022 15:47:52'!
+test12
+	
+	| familyPortfolio report johnsAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Cuenta de Juan'.
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount.
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioCuenta de Juan' = report portfolioTreePrinter .
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart1' stamp: 'k 6/13/2022 15:36:10'!
+test13
+	
+	| familyPortfolio report johnsAccount angiesAccount |
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	angiesAccount := ReceptiveAccount named: 'Angies Account'.
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount with:angiesAccount .
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioJohns AccountAngies Account' = report portfolioTreePrinter.
+	! !
+
+!ReportsTest methodsFor: 'tests ExtraPart1' stamp: 'k 6/13/2022 15:36:10'!
+test14
+	
+	| familyPortfolio report johnsAccount childrenPortfolio |
+	
+	johnsAccount := ReceptiveAccount named: 'Johns Account'.
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos'. 
+	familyPortfolio := Portfolio named: 'Family Portfolio' with: johnsAccount with:childrenPortfolio .
+	report _ Report withAccount: familyPortfolio.
+	self assert: 'Family PortfolioJohns AccountPortfolio de hijos' = report portfolioTreePrinter.
+	! !
 
 
 !classDefinition: #TransferTest category: 'ServiciosFinancieros-Solucion'!
@@ -623,7 +745,7 @@ addTransactionsTo: aCollectionOfTransactions
 
 !classDefinition: #Portfolio category: 'ServiciosFinancieros-Solucion'!
 Account subclass: #Portfolio
-	instanceVariableNames: 'accounts parents'
+	instanceVariableNames: 'accounts parents accountName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
@@ -633,6 +755,10 @@ initialize
 
 	accounts := OrderedCollection new.
 	parents := OrderedCollection new.! !
+
+!Portfolio methodsFor: 'initialization' stamp: 'k 6/13/2022 12:32:00'!
+with:anAccountName
+	accountName _ anAccountName.! !
 
 
 !Portfolio methodsFor: 'main protocol' stamp: 'FH 6/11/2022 19:52:43'!
@@ -686,6 +812,10 @@ addTransactionsTo: aCollectionOfTransactions
 
 	accounts do: [ :anAccount | anAccount addTransactionsTo: aCollectionOfTransactions ]! !
 
+!Portfolio methodsFor: 'private' stamp: 'k 6/13/2022 13:09:45'!
+name
+	^accountName.! !
+
 
 !Portfolio methodsFor: 'composition' stamp: 'HAW 5/25/2019 12:17:31'!
 addRootParentsTo: rootParents
@@ -730,6 +860,22 @@ signalCanNotAddAccount
 	
 	self error: self class canNotAddAccountErrorMessage! !
 
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 15:27:05'!
+aaa:stringOfTreeStructure
+	|stringOfSelfTreeStructure|
+	stringOfSelfTreeStructure _ accounts inject:self name
+		into: [ :stringOfAccountNames :anAccount | anAccount aaa: stringOfAccountNames ].
+	^stringOfTreeStructure,stringOfSelfTreeStructure! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 15:38:54'!
+bbb:stringOfTreeStructure
+	|stringOfSelfTreeStructure|
+	stringOfSelfTreeStructure _ accounts inject:self name
+		into: [ :stringOfAccountNames :anAccount | anAccount bbb: stringOfAccountNames ].
+	stringOfSelfTreeStructure _ stringOfSelfTreeStructure ,'Balance = ',(self balance)asString.
+	^stringOfTreeStructure,stringOfSelfTreeStructure! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Solucion'!
@@ -740,6 +886,25 @@ Portfolio class
 canNotAddAccountErrorMessage
 	
 	^'Can not add repeated account to a portfolio'! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 12:33:18'!
+named: anAccountName
+	^self new with:anAccountName.! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 12:31:12'!
+named: anAccountName with:anAccount
+	^self new 
+		add: anAccount;
+		with:anAccountName;
+		yourself! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 12:32:33'!
+named:anAccountName with:anAccount with: anotherAccount
+	^self new 
+		add: anAccount;
+		add: anotherAccount;
+		with: anAccountName;
+		yourself! !
 
 !Portfolio class methodsFor: 'as yet unclassified' stamp: 'HAW 5/25/2019 11:18:21'!
 with: anAccount
@@ -759,7 +924,7 @@ with: anAccount with: anotherAccount
 
 !classDefinition: #ReceptiveAccount category: 'ServiciosFinancieros-Solucion'!
 Account subclass: #ReceptiveAccount
-	instanceVariableNames: 'transactions'
+	instanceVariableNames: 'transactions accountName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
@@ -769,6 +934,10 @@ initialize
 
 	super initialize.
 	transactions := OrderedCollection new.! !
+
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'k 6/13/2022 12:17:10'!
+initializeWith:anAccountName
+	accountName _ anAccountName.! !
 
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'FH 6/11/2022 19:53:16'!
@@ -801,6 +970,10 @@ addTransactionsTo: aCollectionOfTransactions
 
 	aCollectionOfTransactions addAll: transactions ! !
 
+!ReceptiveAccount methodsFor: 'private' stamp: 'k 6/13/2022 12:17:43'!
+name
+	^accountName.! !
+
 
 !ReceptiveAccount methodsFor: 'composition' stamp: 'HAW 5/25/2019 12:03:32'!
 addedTo: aPortfolio 
@@ -811,6 +984,27 @@ addedTo: aPortfolio
 isComposedBy: anAccount
 
 	^self = anAccount ! !
+
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 13:08:55'!
+aaa:stringOfAccountNames
+	^stringOfAccountNames, self name.! !
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 15:33:26'!
+bbb:stringOfTreeStructure
+	|report|
+	report _ Report withAccount: self.
+	^stringOfTreeStructure,self name,report accountSummary.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'ReceptiveAccount class' category: 'ServiciosFinancieros-Solucion'!
+ReceptiveAccount class
+	instanceVariableNames: ''!
+
+!ReceptiveAccount class methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 12:16:21'!
+named:anAccountName
+	^self new initializeWith:anAccountName.! !
 
 
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Solucion'!
@@ -865,7 +1059,7 @@ affectBalance: aBalance
 
 	^aBalance + value ! !
 
-!Deposit methodsFor: 'balance' stamp: 'FH 6/12/2022 13:39:11'!
+!Deposit methodsFor: 'balance' stamp: 'k 6/13/2022 11:59:45'!
 asStringAddTo: aStringOfTransactions
 
 	^aStringOfTransactions,'Deposit of ',(value asString).! !
@@ -1061,6 +1255,19 @@ netTransfer
 	^account transactions 
 		inject: 0*peso
 		into: [ :netTransfer :aTransaction | aTransaction AddTransferLegValueTo: netTransfer ].! !
+
+!Report methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 15:36:55'!
+portfolioDetailedTreePrinter
+	|stringOfTreeStructure|
+	stringOfTreeStructure _ ''.
+	^account bbb:stringOfTreeStructure.! !
+
+!Report methodsFor: 'as yet unclassified' stamp: 'k 6/13/2022 15:36:10'!
+portfolioTreePrinter
+	|stringOfTreeStructure|
+	stringOfTreeStructure _ ''.
+	^account aaa:stringOfTreeStructure.
+! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
